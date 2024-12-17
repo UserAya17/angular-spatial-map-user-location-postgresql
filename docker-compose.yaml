@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgis/postgis:latest  # Use the PostGIS-enabled image
+    container_name: postgres
+    environment:
+      POSTGRES_USER: admin         # Replace with your desired username
+      POSTGRES_PASSWORD: admin     # Replace with your desired password
+      POSTGRES_DB: mydatabase      # Replace with your desired database name
+    ports:
+      - "5432:5432"                # Exposing PostgreSQL on port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistent storage for PostgreSQL
+
+  pgadmin:
+    image: dpage/pgadmin4:latest   # pgAdmin for PostgreSQL management
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com  # Replace with your desired admin email
+      PGADMIN_DEFAULT_PASSWORD: admin         # Replace with your desired admin password
+    ports:
+      - "5050:80"                  # Exposing pgAdmin on port 5050
+    depends_on:
+      - postgres                   # Ensure pgAdmin starts after PostgreSQL
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin  # Persistent storage for pgAdmin
+
+volumes:
+  postgres_data:                   # Volume for PostgreSQL data
+  pgadmin_data:                    # Volume for pgAdmin data
